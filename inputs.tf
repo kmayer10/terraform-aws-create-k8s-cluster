@@ -4,7 +4,7 @@ variable "control_plane" {
     instance_type               = string
     key_name                    = string
     associate_public_ip_address = optional(bool, true)
-    vpc_security_group_ids      = list
+    vpc_security_group_ids      = list(string)
     subnet_id                   = string
     tags                        = string
     user_data                   = string
