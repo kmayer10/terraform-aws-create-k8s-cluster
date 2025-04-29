@@ -19,11 +19,12 @@ resource "null_resource" "create_join_command_on_control_plane" {
       "sudo kubeadm token create --print-join-command > /tmp/join_command.sh",
       "chmod 600 ~/.ssh/id_rsa",
       "sudo apt-get install -y ansible",
-      "echo [defaults] > /home/ubuntu/.ansible.cfg",
-      "echo host_key_checking = False >> /home/ubuntu/.ansible.cfg",
-      "sudo cp /etc/kubernetes/admin.conf /home/ubuntu/.kube/config",
-      "sudo chown ubuntu:ubuntu /home/ubuntu/.kube/config",
-      "sudo chmod 644 /home/ubuntu/.kube/config"
+      "echo [defaults] > /home/${var.control_plane.user}/.ansible.cfg",
+      "echo host_key_checking = False >> /home/${var.control_plane.user}/.ansible.cfg",
+      "mkdir -p /home/${var.control_plane.user}/.kube"
+      "sudo cp /etc/kubernetes/admin.conf /home/${var.control_plane.user}/.kube/config",
+      "sudo chown ${var.control_plane.user}:${var.control_plane.user} /home/${var.control_plane.user}/.kube/config",
+      "sudo chmod 644 /home/${var.control_plane.user}/.kube/config"
     ]
     connection {
       type        = "ssh"
