@@ -12,3 +12,24 @@ module "create_control_plane" {
   private_key_file            = var.control_plane.private_key_file
   private_key                 = var.control_plane.private_key
 }
+
+resource "null_resource" "create_join_command_on_control_plane" {
+  provisioner "remote-exec" {
+    inline = [
+      "sudo kubeadm token create --print-join-command > /tmp/join_command.sh",
+      "chmod 600 ~/.ssh/id_rsa",
+      "sudo apt-get install -y ansible",
+      "echo [defaults] > /home/ubuntu/.ansible.cfg",
+      "echo host_key_checking = False >> /home/ubuntu/.ansible.cfg",
+      "sudo cp /etc/kubernetes/admin.conf /home/ubuntu/.kube/config",
+      "sudo chown ubuntu:ubuntu /home/ubuntu/.kube/config",
+      "sudo chmod 644 /home/ubuntu/.kube/config"
+    ]
+    connection {
+      type        = "ssh"
+      host        = module.create_control_plane.instance_public_ip
+      user        = var.control_plane.user
+      private_key = var.control_plane.private_key
+    }
+  }
+}

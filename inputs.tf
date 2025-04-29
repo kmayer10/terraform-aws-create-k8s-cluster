@@ -10,5 +10,6 @@ variable "control_plane" {
     user_data                   = string
     private_key_file            = string
     private_key                 = string
+    user                        = optional(string, "ubuntu")
   })
 }
