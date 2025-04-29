@@ -21,7 +21,7 @@ resource "null_resource" "create_join_command_on_control_plane" {
       "sudo apt-get install -y ansible",
       "echo [defaults] > /home/${var.control_plane.user}/.ansible.cfg",
       "echo host_key_checking = False >> /home/${var.control_plane.user}/.ansible.cfg",
-      "mkdir -p /home/${var.control_plane.user}/.kube"
+      "mkdir -p /home/${var.control_plane.user}/.kube",
       "sudo cp /etc/kubernetes/admin.conf /home/${var.control_plane.user}/.kube/config",
       "sudo chown ${var.control_plane.user}:${var.control_plane.user} /home/${var.control_plane.user}/.kube/config",
       "sudo chmod 644 /home/${var.control_plane.user}/.kube/config"
