@@ -44,7 +44,7 @@ resource "null_resource" "fetch_kubeconfig_from_control_plane_to_local" {
   }
 }
 
-resource "null_resource" "delete_config" {
+resource "null_resource" "delete_kubeconfig" {
   provisioner "local-exec" {
     when    = destroy
     command = "rm -rf ./config"
