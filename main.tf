@@ -43,3 +43,10 @@ resource "null_resource" "fetch_kubeconfig_from_control_plane_to_local" {
     command = "scp -i ${var.control_plane.private_key_file} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${var.control_plane.user}@${module.create_control_plane.instance_public_ip}:/home/${var.control_plane.user}/.kube/config ./config"
   }
 }
+
+resource "null_resource" "delete_config" {
+  provisioner "local-exec" {
+    when    = destroy
+    command = "rm -rf ./config"
+  }  
+}
